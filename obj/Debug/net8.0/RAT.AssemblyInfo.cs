@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RAT")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a1f1f0ec89930a1f6577895a558c35976770e7a6")]
 [assembly: System.Reflection.AssemblyProductAttribute("RAT")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RAT")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

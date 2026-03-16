@@ -1,0 +1,12 @@
+## Build results
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+
+.env
+## Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
