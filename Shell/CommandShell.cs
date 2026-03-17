@@ -88,7 +88,10 @@ static class Shell
 
     private static void HandleMachineCommand(string[] args)
     {
-        if (args.Length == 0 | args.Length > 1) { }
+        if (args.Length != 1)
+        {
+            Console.WriteLine("Command machine must have only 1 param");
+        }
     }
 
     private static void ShowHelp()

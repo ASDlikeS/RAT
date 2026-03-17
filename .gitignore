@@ -4,6 +4,9 @@ obj/
 [Dd]ebug/
 [Rr]elease/
 
+obj
+bin
+
 .vscode
 .env
 .gitignore
