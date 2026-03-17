@@ -4,7 +4,9 @@ obj/
 [Dd]ebug/
 [Rr]elease/
 
+.vscode
 .env
+.gitignore
 ## Visual Studio files
 .vs/
 *.user
