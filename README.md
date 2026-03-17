@@ -1,6 +1,9 @@
-# Windows RAT (Remote Administration Tool)
+# 🖥️ Windows RAT (Remote Administration Tool)
 
-Educational tool for testing Windows security. !!! Currently in active development !!!.
+---
+Educational tool for testing Windows security.
+
+## 🛠️ Currently in active development 🛠️.
 
 > ⚠️ **DISCLAIMER**: For educational purposes only. Use only on systems you own.
 
@@ -37,7 +40,7 @@ dotnet run
 
 # Build standalone .exe
 dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
-
+```
 # 📁 Project Structure
 ```
 RAT/
