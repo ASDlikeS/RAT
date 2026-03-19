@@ -9,7 +9,6 @@ public static class Config
             @"
     ╔══════════════════════════════════╗
     ║         PAYLOAD CONFIG           ║
-    ╠══════════════════════════════════╣
     ║  Network:                        ║
     ║    Listen IP: 0.0.0.0            ║
     ║    Port: 8888                    ║
@@ -28,11 +27,14 @@ public static class Config
         );
     }
 
-    public static async Task HandleEditConfig()
+    public static void ConfigSettingsHelp()
     {
-        Console.WriteLine("[*] Opening config.json for editing...");
-        await Task.Delay(1000);
-        Console.WriteLine("[+] Config editor closed");
-        Console.WriteLine("[*] Changes saved (simulated)");
+        Console.WriteLine(@"
+{
+    Target: { // Simplicity property, that won't work without 
+        optimizeConnection: balance<string[perfomance|balance|visual]> // 
+    }
+}
+        ");
     }
 }

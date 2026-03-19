@@ -12,7 +12,7 @@ static class Shell
         Console.WriteLine("[*] Initializing shell commands...");
         // Базовые команды
         _commands["help"] = (args) => ShowHelp();
-        _commands["menu"] = async (args) => await OpenMenu();
+        _commands["menu"] = (args) => OpenMenu();
         _commands["clear"] = (args) => Console.Clear();
         _commands["cls"] = (args) => Console.Clear();
         _commands["exit"] = (args) => Environment.Exit(0);
@@ -68,9 +68,9 @@ static class Shell
         }
     }
 
-    private static async Task OpenMenu()
+    private static void OpenMenu()
     {
-        await MainMenuLoop();
+        MainMenuLoop();
     }
 
     private static void HandleMachineCommand(string[] args)
@@ -164,6 +164,8 @@ static class Shell
                 else
                     Console.WriteLine("Changing path...");
                 break;
+            case "--how-to-use":
+
             case "--help":
             case "-h":
                 ShowConfigHelp();
@@ -200,6 +202,7 @@ Available commands:
   config [options]              Manage utility config
     --re-generate, -rg            Regenerate config (admin only)
     --change-path, -p <PATH>      Change config file path
+    --how-to-use, -htu            Shows all properties and values
 
 Examples:
   machine --list
@@ -231,8 +234,9 @@ machine command options:
         Console.WriteLine(
             @"
 config command options:
-  --re-generate, -rg            Regenerate config with defaults (admin only)
+  --re-generate, -rg            Regenerate config (admin only)
   --change-path, -p <PATH>      Change config file path
+  --how-to-use, -htu            Shows all properties and values 
 "
         );
     }

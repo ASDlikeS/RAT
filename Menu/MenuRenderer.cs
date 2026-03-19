@@ -31,7 +31,7 @@ static class Menu
         );
     }
 
-    internal static async Task MainMenuLoop()
+    internal static void MainMenuLoop()
     {
         bool running = true;
 
